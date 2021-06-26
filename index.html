@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="shortcut icon" href="assets/js_logo.png" type="image/x-icon">
+    <title>Javascript editor</title>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="container">
+            <!-- header -->
+            <div class="header-bar">
+                <div class="header-container">
+                    <img src="assets/js_logo.png" alt="js_logo" class="logo-icon">
+                    <button class="btn-play">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            style="fill:rgba(255, 255, 255, 1);transform:;-ms-filter:">
+                            <path
+                                d="M12 14H18V16H12zM6.293 9.707L8.586 12 6.293 14.293 7.707 15.707 11.414 12 7.707 8.293z">
+                            </path>
+                            <path
+                                d="M20,4H4C2.897,4,2,4.897,2,6v12c0,1.103,0.897,2,2,2h16c1.103,0,2-0.897,2-2V6C22,4.897,21.103,4,20,4z M4,18V6h16 l0.002,12H4z">
+                            </path>
+                        </svg>
+                        &nbsp;Run Command
+                    </button>
+                </div>
+            </div>
+            <!--end  header -->
+
+            <!-- body-container -->
+            <div class="body-container">
+                <div class="editor-viewer">
+                    <div class="editor-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                            style="fill:rgba(255, 255, 255, 1);transform:;-ms-filter:">
+                            <path
+                                d="M7,17.013l4.413-0.015l9.632-9.54c0.378-0.378,0.586-0.88,0.586-1.414s-0.208-1.036-0.586-1.414l-1.586-1.586 c-0.756-0.756-2.075-0.752-2.825-0.003L7,12.583V17.013z M18.045,4.458l1.589,1.583l-1.597,1.582l-1.586-1.585L18.045,4.458z M9,13.417l6.03-5.973l1.586,1.586l-6.029,5.971L9,15.006V13.417z">
+                            </path>
+                            <path
+                                d="M5,21h14c1.103,0,2-0.897,2-2v-8.668l-2,2V19H8.158c-0.026,0-0.053,0.01-0.079,0.01c-0.033,0-0.066-0.009-0.1-0.01H5V5 h6.847l2-2H5C3.897,3,3,3.897,3,5v14C3,20.103,3.897,21,5,21z">
+                            </path>
+                        </svg>&nbsp;
+                        Script Editor
+                    </div>
+                    <div class="editor-wrap">
+                        <div class="line-nums"><span>1</span></div>
+                        </pre>
+                        <textarea class="editor" name="codeEditor" id="codeEditor" onkeyup="textAreaAdjust(this)"></textarea>
+                    </div>
+                </div>
+                <div class="console-viewer">
+                    <div class="console-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                            style="fill:rgba(255, 255, 255, 1);transform:;-ms-filter:">
+                            <path
+                                d="M12 14H18V16H12zM6.293 9.707L8.586 12 6.293 14.293 7.707 15.707 11.414 12 7.707 8.293z">
+                            </path>
+                            <path
+                                d="M20,4H4C2.897,4,2,4.897,2,6v12c0,1.103,0.897,2,2,2h16c1.103,0,2-0.897,2-2V6C22,4.897,21.103,4,20,4z M4,18V6h16 l0.002,12H4z">
+                            </path>
+                        </svg>&nbsp;
+                        Result Preview
+                    </div>
+                    <div id="outputField" class=preview>//Please don't use "console.log();" property in this editor,
+                        it will not work....//</div>
+                </div>
+                <!-- end body-container -->
+
+            </div>
+            <!-- footer -->
+            <div class="footer-bar">
+                <div class="character-info">
+                    <span class="charView">Character: 0</span>&nbsp;&nbsp;
+                    <span class="lineCount">Line: 1</span>
+                </div>
+                <!-- <div class="error-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                        style="fill:rgba(216, 0, 0, 1);transform:;-ms-filter:">
+                        <path
+                            d="M16,2H8C4.691,2,2,4.691,2,8v13c0,0.553,0.447,1,1,1h13c3.309,0,6-2.691,6-6V8C22,4.691,19.309,2,16,2z M20,16 c0,2.206-1.794,4-4,4H4V8c0-2.206,1.794-4,4-4h8c2.206,0,4,1.794,4,4V16z">
+                        </path>
+                        <path d="M11 6H13V14H11zM11 16H13V18H11z"></path>
+                    </svg>&nbsp;
+                    <span>Error:</span>
+                </div> -->
+            </div>
+            <!-- end footer -->
+        </div>
+    </div>
+
+</body>
+<script src="js/app.js"></script>
+<script src="js/behave.js"></script>
+<script src="js/script.js"></script>
+
+
+</html>

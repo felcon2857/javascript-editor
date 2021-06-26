@@ -1,0 +1,195 @@
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Simple JS</title>
+    <meta name="generator" content="TextMate http://macromates.com/">
+    <meta name="author" content="Gavin Kistner">
+    <!-- Date: 2007-12-26 -->
+    <style type="text/css" media="screen">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        #input,
+        #output {
+            display: block;
+            margin: 0;
+            border: 0;
+            font-family: monospace;
+            overflow: auto;
+        }
+
+        #input {
+            height: 60%;
+            width: 99%;
+            padding: 0.5em;
+            white-space: pre;
+        }
+
+        #output {
+            background: #efe;
+            color: #363;
+            height: 40%;
+            font-size: 85%;
+            position: relative;
+        }
+
+        #separator {
+            height: 11px;
+            background: #666;
+            border: 0;
+            margin: 0;
+            cursor: move;
+        }
+
+        #separator.over {
+            background: #69c;
+        }
+
+        body.drag #separator {
+            background: #9cf ! important;
+        }
+
+        body.drag * {
+            cursor: move ! important;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+        }
+
+        #options {
+            font-family: Tahoma, sans-serif;
+            font-size: 9pt;
+            background: url(transparent80.png);
+            margin: 0;
+            padding: 0.1em;
+            padding-right: 0.4em;
+            border: 1px solid #9c9;
+            border-width: 0 0 1px 1px;
+            float: right;
+            z-index: 10;
+        }
+
+        #options label {
+            display: block;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+        }
+
+        #outputField {
+            padding: 0.5em;
+            white-space: pre
+        }
+    </style>
+</head>
+
+<body class=""><textarea id="input" cols="80" rows="20">var msg = "Hello";
+    msg += " World";</textarea>
+    <hr id="separator" class="">
+    <div id="output">
+        <div id="options" style="float: right; position: static; right: 0px;">
+            <label><input type="checkbox" name="wrapOutput" id="wrapOutput" checked=""> Wrap?</label>
+            <label><input type="checkbox" name="continuous" id="continuous"> Live?</label>
+        </div>
+        <div id="outputField" style="white-space: normal;">hello</div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+        var input = document.getElementById('input');
+        var output = document.getElementById('outputField');
+        var separator = document.getElementById('separator');
+        var wrapOutput = document.getElementById('wrapOutput');
+        var continuous = document.getElementById('continuous');
+        var options = document.getElementById('options');
+
+        var theSeparatorHeightInPixels = separator.clientHeight;
+        input.focus();
+
+        HTMLElement.prototype.addClass = function (inClassName) {
+            this.className += ' ' + inClassName;
+        }
+
+        HTMLElement.prototype.killClass = function (inClassName) {
+            var theNameAlone = new RegExp('\\b' + inClassName + ' ?| ?' + inClassName + '\\b', 'g');
+            this.className = this.className.replace(theNameAlone, '');
+        }
+        // Reallocate space
+        function dragSeparator(inEvent) {
+            var theSplitPoint = inEvent.clientY - theSeparatorHeightInPixels / 2;
+            input.style.height = theSplitPoint + 'px';
+            output.style.height = (document.body.clientHeight - (theSplitPoint + theSeparatorHeightInPixels)) + 'px';
+            inEvent.stopPropagation();
+            inEvent.preventDefault();
+            return false;
+        }
+        separator.addEventListener('mouseover', function () { separator.addClass('over') }, false);
+        separator.addEventListener('mouseout', function () { separator.killClass('over') }, false);
+        separator.addEventListener('mousedown', function () {
+            document.body.addEventListener('mousemove', dragSeparator, true);
+            document.body.addClass('drag');
+        }, false);
+        document.body.addEventListener('mouseup', function () {
+            document.body.killClass('drag');
+            document.body.removeEventListener('mousemove', dragSeparator, true);
+        }, false);
+
+        wrapOutput.addEventListener('change', function () {
+            if (wrapOutput.checked) {
+                output.style.whiteSpace = 'normal';
+                options.style.float = 'right';
+                options.style.position = 'static';
+                options.style.right = 'auto ! important';
+            }
+            else {
+                output.style.whiteSpace = 'pre';
+                options.style.float = 'none';
+                options.style.position = 'absolute';
+                options.style.right = '0';
+            }
+        }, false);
+
+        // The whole point of this page
+        function evalInput() {
+            if (input.value != window.g_lastInput) {
+                var theResult, evalSucceeded;
+                try {
+                    // TODO: Create an iframe for a blank slate context to evaluate within.
+                    theResult = eval(input.value);
+                    evalSucceeded = true;
+                }
+                catch (e) {
+                    output.innerHTML = e;
+                }
+                if (evalSucceeded) {
+                    output.innerHTML = (theResult + "").replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\r\n|\r|\n/g, '<br>');
+                }
+                window.g_lastInput = input.value;
+            }
+        }
+
+        input.addEventListener('blur', evalInput, false);
+        continuous.addEventListener('change', function () {
+            if (continuous.checked) {
+                window.g_repeatTimer = window.setInterval(evalInput, 500);
+            }
+            else if (window.g_repeatTimer) {
+                window.g_repeatTimer = window.clearInterval(window.g_repeatTimer);
+            }
+        }, false);
+        continuous.click();
+        wrapOutput.click();
+        evalInput();
+    </script>
+
+
+</body>
+
+</html>
